@@ -56,7 +56,7 @@ if($ch_resp === FALSE){
   } else if($resp_arr["status_code"] == 2){
     $reply = ":disappointed: I am sorry to report that *".$resp_arr["domain"]."* is *not up*!";
   } else if($resp_arr["status_code"] == 3){
-    $reply = ":interrobang: *".$text."* does not appear to be a valid domain. "
+    $reply = ":interrobang: *".$text."* does not appear to be a valid domain. ";
     $reply .= "Please enter both the domain name AND suffix (ex: amazon.com or whitehouse.gov).";
   }
 }
