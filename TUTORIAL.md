@@ -212,5 +212,12 @@ Now, after all that set up and logic and design thinking, it's finally time for 
 
     echo $reply;
 
-That's it. That's all you have to to. Just echo the `$reply` string and cURL, which has been waiting patiently this whole time while we went through our machinations, will take that reply and post it to 
+That's it. That's all you have to to. Just echo the `$reply` string and cURL, which has been waiting patiently this whole time while we went through our machinations, will take that reply and post it back to the user in Slack.
+
+In the next part of the tutorial, we'll build on this part in two ways:
+
+* Handling more complex information returned from the third-party service 
+* Sending the reply to Slack through an incoming webhook, which gives you more options for formatting and allows you to send the reply to any channel for everyone on the team to see.
+
+
 
