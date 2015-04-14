@@ -80,12 +80,16 @@ Next, the text that was entered with the command. In this case, it will be the d
     
 The token is an additional identifier that's sent with the slash command that you could use to verify that what's calling your script is actually your slash command. You'll find the token on your slash command configuration page.
 
-    $token = $_POST['token'];
-    
+```php
+$token = $_POST['token'];
+```
+
 This `if` statement will return a message to your user if the token doesn't match, saying it needs to be updated.
 
 ```php
-// replace this with the token from your slash command configuration page
+#
+# replace this token with the token from your slash command configuration page
+#
 
 if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ 
 	$msg = "The token for the slash command doesn't match. Check your script.";
