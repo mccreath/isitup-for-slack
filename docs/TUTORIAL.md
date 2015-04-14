@@ -22,19 +22,22 @@ Our script is going to
 
 ## What we'll be using
 
-* PHP (http://php.net)
-* JSON (JavaScript Object Notation - http://json.org/)
-* cURL (http://curl.haxxe.se)
+* 	PHP (http://php.net)
+* 	JSON (JavaScript Object Notation - http://json.org/)
+
+	JSON is a simple way to represent data and it's 
+
+* 	cURL (http://curl.haxxe.se)
+
+	If you're familiar with cURL, feel free to jump over this section.
+
+	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes webhooks work. The thing about cURL that's useful for us is that not only can you use it from the command line (which makes it easy to use for testing things), but you can interact with it from most modern scripting language. 
+
+	PHP has had support for cURL for years, and we're going to take advantage of that so that our script can receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
 
 Don't worry too much if you've never used one or more of those. Our use of them will be thoroughly explained in the tutorial.
 
 ### cURL, briefly
-
-If you're familiar with cURL, feel free to jump over this section.
-
-cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes webhooks work. The thing about cURL that's useful for us is that not only can you use it from the command line (which makes it easy to use for testing things), but you can interact with it from most modern scripting language. 
-
-PHP has had support for cURL for years, and we're going to take advantage of that so that our script can receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
 
 ## What you'll need:
 
