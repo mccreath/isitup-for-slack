@@ -22,6 +22,8 @@ Our script is going to
 
 ## What we'll be using
 
+Don't worry too much if you've never used one or more of these. Our use of them will be thoroughly explained in the tutorial.
+
 * 	PHP (http://php.net)
 * 	JSON (JavaScript Object Notation - http://json.org/)
 
@@ -34,10 +36,6 @@ Our script is going to
 	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes webhooks work. The thing about cURL that's useful for us is that not only can you use it from the command line (which makes it easy to use for testing things), but you can interact with it from most modern scripting language. 
 
 	PHP has had support for cURL for years, and we're going to take advantage of that so that our script can receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
-
-Don't worry too much if you've never used one or more of those. Our use of them will be thoroughly explained in the tutorial.
-
-### cURL, briefly
 
 ## What you'll need:
 
@@ -163,8 +161,8 @@ The first thing we check is whether the
 ```php
 if($ch_response === FALSE){
 
-	# isitup.org could not reach the domain entered by the user 
-	$reply = $url_to_check." could not be reached.";
+    # isitup.org could not reach the domain entered by the user 
+    $reply = $url_to_check." could not be reached.";
 	
 } else {
 
@@ -178,16 +176,16 @@ Now we just need to see which of the three responses we got back. `1` means the 
 ```php
 if ($response_array["status_code"] == 1){
     
-		$reply = "Good news! ".$response_array["domain"]." is up!";
+	$reply = "Good news! ".$response_array["domain"]." is up!";
 		
 }else if ($response_array["status_code"] == 2){
 	
-		$reply = "Oh no! ".$response_array["domain"]." is down!";
+	$reply = "Oh no! ".$response_array["domain"]." is down!";
 		
 }else if($response_array["status_code"] == 3){
 	
-		$reply  = "The domain you entered, ".$domain.", does not appear to be a valid domain. ";
-		$reply .= "Please enter both the domain name AND suffix (ex: amazon.com or whitehouse.gov).";
+	$reply  = "The domain you entered, ".$domain.", does not appear to be a valid domain. ";
+	$reply .= "Please enter both the domain name AND suffix (ex: amazon.com or whitehouse.gov).";
 
 }
 ```
@@ -223,20 +221,20 @@ Now our entire `if` statement looks like this:
 ```php
 if($ch_response === FALSE){
 
-		# isitup.org could not reach the domain entered by the user 
-		$reply = $url_to_check." could not be reached.";
+	# isitup.org could not reach the domain entered by the user 
+	$reply = $url_to_check." could not be reached.";
 		
 }else{
 
-		if ($response_array["status_code"] == 1){
+	if ($response_array["status_code"] == 1){
 
-			$reply = ":thumbsup: I am happy to report that *<".$response_array["domain"].">* is *up*!";
+		$reply = ":thumbsup: I am happy to report that *<".$response_array["domain"].">* is *up*!";
 
-		}else if ($response_array["status_code"] == 2){
+	}else if ($response_array["status_code"] == 2){
 
 		$reply = ":disappointed: I am sorry to report that *<".$response_array["domain"].">* is *down*!";
 
-		}else if($response_array["status_code"] == 3){
+	}else if($response_array["status_code"] == 3){
 
 		$reply  = ":interrobang: *".$domain."* does not appear to be a valid domain. ";
 		$reply .= "Please enter both the domain name AND the suffix (ex: *amazon.com* or *whitehouse.gov*).";
