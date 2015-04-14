@@ -84,7 +84,9 @@ The token is an additional identifier that's sent with the slash command that yo
     
 This `if` statement will return a message to your user if the token doesn't match, saying it needs to be updated.
 
-    if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ #replace this with the token from your slash command configuration page
+    // replace this with the token from your slash command configuration page
+    
+    if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ 
       $msg = "The token for the slash command doesn't match. Check your script.";
       die($msg);
       echo $msg;
