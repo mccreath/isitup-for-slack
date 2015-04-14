@@ -78,8 +78,13 @@ Next, the text that was entered with the command. In this case, it will be the d
      
     $domain = $_POST['text'];
     
-The token is an additional identifier that's sent with the slash command that you could use to verify that what's calling your script is actually your slash command.
-<!-- think about actually adding this. not a bad example to set. just put it in a die statement. -->
+The token is an additional identifier that's sent with the slash command that you could use to verify that what's calling your script is actually your slash command. You'll find the token on your slash command configuration page.
+
+if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ #replace this with the token from your slash command configuration page
+  $msg = "The token for the slash command doesn't match. Check your script.";
+  die($msg);
+  echo $msg;
+}
     
     $token = $_POST['token'];
     
@@ -174,7 +179,7 @@ For status `2`, the site is down, let's use the disappointed face. Adding the li
     
 For status `3`, the domain entered by the user was not valid, let's use the interrobang (!?) to indicate there's a problem. Let's also include some examples of correctly formatted domains, and go ahead and bold those, too. Notice that in this message, we're 
 
-     ":interrobang: *".$domain."* does not appear to be a valid domain. Please enter both the domain name AND the suffix (ex: *amazon.com* or *whitehouse.gov*)."
+     ":interrobang: *".$domain."* does not appear to be a valid domain. Please enter both the domain name AND the suffix (example: *amazon.com* or *whitehouse.gov*)."
      
 ### Completed `if` statement
      

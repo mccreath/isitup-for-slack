@@ -28,6 +28,14 @@ $command = $_POST['command'];
 $text = $_POST['text'];
 $token = $_POST['token'];
 
+# Check the token and make sure the request is from our team 
+if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ #replace this with the token from your slash command configuration page
+  $msg = "The token for the slash command doesn't match. Check your script.";
+  die($msg);
+  echo $msg;
+}
+
+
 # isitup.org doesn't require you to use API keys, but they do require that any automated script send in a user agent string.
 # You can keep this one, or update it to something that makes more sense for you
 $user_agent = "IsitupForSlack/1.0 (https://github.com/mccreath/istiupforslack; mccreath@gmail.org)";
@@ -57,19 +65,19 @@ $resp_arr = json_decode($ch_resp,true);
 # Note that we're using the text equivalent for an emoji at the start of each of the responses.
 # You can use any emoji that is available to your Slack team, including the custom ones.
 if($ch_resp === FALSE){
-  # isitup.org could not reach the domain entered by the user 
-  $reply = $url_to_check." could not be reached.";
-} else {
+  # isitup.org could not be reached 
+  $reply = "Ironically, isitup could not be reached.";
+}else{
   if($resp_arr["status_code"] == 1){
   	# Yay, the domain is up! 
-    $reply = ":thumbsup: I am happy to report that *".$resp_arr["domain"]."* is *up*!";
+    $reply = ":thumbsup: I am happy to report that *<".$resp_arr["domain"].">* is *up*!";
   } else if($resp_arr["status_code"] == 2){
     # Boo, the domain is down. 
-    $reply = ":disappointed: I am sorry to report that *".$resp_arr["domain"]."* is *not up*!";
+    $reply = ":disappointed: I am sorry to report that *<".$resp_arr["domain"].">* is *not up*!";
   } else if($resp_arr["status_code"] == 3){
     # Uh oh, isitup.org doesn't think the domain entered by the user is valid
-    $reply = ":interrobang: *".$text."* does not appear to be a valid domain. ";
-    $reply .= "Please enter both the domain name AND suffix (ex: amazon.com or whitehouse.gov).";
+    $reply = ":interrobang: *".$text."* does not appear to be a valid domain. \n";
+    $reply .= "Please enter both the domain name AND suffix (example: *amazon.com* or *whitehouse.gov*).";
   }
 }
 
