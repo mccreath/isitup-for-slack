@@ -84,13 +84,15 @@ The token is an additional identifier that's sent with the slash command that yo
     
 This `if` statement will return a message to your user if the token doesn't match, saying it needs to be updated.
 
-    // replace this with the token from your slash command configuration page
-    
-    if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ 
-      $msg = "The token for the slash command doesn't match. Check your script.";
-      die($msg);
-      echo $msg;
-    }
+```php
+// replace this with the token from your slash command configuration page
+
+if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ 
+	$msg = "The token for the slash command doesn't match. Check your script.";
+	die($msg);
+	echo $msg;
+}
+```
     
     
 The way isitup works is that you call a URL that specifies the domain you want to check and the format that you want to receive the data in. You can get JSON, JSONP, or comma-separate text. We're going to use JSON because PHP has some nice built-in tools for handling JSON. It's also a very common format for exchanging data between web services.
