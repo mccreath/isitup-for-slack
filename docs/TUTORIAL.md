@@ -44,7 +44,7 @@ Go to your integrations page at Slack (http://my.slack.com/services/new) and scr
 
 Create the text command itself. This is the text that the user will type after the slash. In this case, `isitup` is clear and short, so let's stick with that. But you can use whatever makes the most sense for your command and your users.
 
-![Create the command](create-command.png)
+![Create the command](choose-command.png)
 
 For now you can leave everything else empty. We'll come back and finish setting this up in a bit. Just scroll down to the bottom and click the "Save Integration" button.
 
@@ -80,13 +80,16 @@ Next, the text that was entered with the command. In this case, it will be the d
     
 The token is an additional identifier that's sent with the slash command that you could use to verify that what's calling your script is actually your slash command. You'll find the token on your slash command configuration page.
 
-if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ #replace this with the token from your slash command configuration page
-  $msg = "The token for the slash command doesn't match. Check your script.";
-  die($msg);
-  echo $msg;
-}
-    
     $token = $_POST['token'];
+    
+This `if` statement will return a message to your user if the token doesn't match, saying it needs to be updated.
+
+    if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ #replace this with the token from your slash command configuration page
+      $msg = "The token for the slash command doesn't match. Check your script.";
+      die($msg);
+      echo $msg;
+    }
+    
     
 The way isitup works is that you call a URL that specifies the domain you want to check and the format that you want to receive the data in. You can get JSON, JSONP, or comma-separate text. We're going to use JSON because PHP has some nice built-in tools for handling JSON. It's also a very common format for exchanging data between web services.
 
