@@ -153,20 +153,22 @@ The first thing we check is whether the
     
 Now we just need to see which of the three responses we got back. `1` means the site is up. `2` means the site is not up. `3` means the person who sent the command didn't write the domain properly, which usually means they left off the `.com` (or `.net`, `.org`, etc.). We're going to use a second `if` statement to test which number we got back and set the `$reply` variable to the correct message.
     
-    if ($response_array["status_code"] == 1){
+```php
+if ($response_array["status_code"] == 1){
     
 		$reply = "Good news! ".$response_array["domain"]." is up!";
 		
-    }else if ($response_array["status_code"] == 2){
+}else if ($response_array["status_code"] == 2){
 	
 		$reply = "Oh no! ".$response_array["domain"]." is down!";
 		
-    }else if($response_array["status_code"] == 3){
+}else if($response_array["status_code"] == 3){
 	
 		$reply  = "The domain you entered, ".$domain.", does not appear to be a valid domain. ";
 		$reply .= "Please enter both the domain name AND suffix (ex: amazon.com or whitehouse.gov).";
-		
-	}
+
+}
+```
 	
 ### Add some visual cues
 
@@ -196,30 +198,31 @@ For status `3`, the domain entered by the user was not valid, let's use the inte
      
 Now our entire `if` statement looks like this:
 
-    if($ch_response === FALSE){
-    
-        # isitup.org could not reach the domain entered by the user 
-        $reply = $url_to_check." could not be reached.";
-        
-    }else{
+```php
+if($ch_response === FALSE){
 
-        if ($response_array["status_code"] == 1){
-    
-	        $reply = ":thumbsup: I am happy to report that *<".$response_array["domain"].">* is *up*!";
+		# isitup.org could not reach the domain entered by the user 
+		$reply = $url_to_check." could not be reached.";
 		
-        }else if ($response_array["status_code"] == 2){
-	
-		    $reply = ":disappointed: I am sorry to report that *<".$response_array["domain"].">* is *down*!";
-		
-        }else if($response_array["status_code"] == 3){
-	
-		    $reply  = ":interrobang: *".$domain."* does not appear to be a valid domain. ";
-		    $reply .= "Please enter both the domain name AND the suffix (ex: *amazon.com* or *whitehouse.gov*).";
-		
-	    }
-	    
-    }
+}else{
 
+		if ($response_array["status_code"] == 1){
+
+			$reply = ":thumbsup: I am happy to report that *<".$response_array["domain"].">* is *up*!";
+
+		}else if ($response_array["status_code"] == 2){
+
+		$reply = ":disappointed: I am sorry to report that *<".$response_array["domain"].">* is *down*!";
+
+		}else if($response_array["status_code"] == 3){
+
+		$reply  = ":interrobang: *".$domain."* does not appear to be a valid domain. ";
+		$reply .= "Please enter both the domain name AND the suffix (ex: *amazon.com* or *whitehouse.gov*).";
+
+	}
+	
+}
+```
      
      
 ### Send the formatted response back to the user
