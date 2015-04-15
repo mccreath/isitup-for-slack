@@ -65,7 +65,9 @@ Now we're going to go step by step through the PHP script. If PHP isn't your jam
 
 The isitup API requests that the client is identified by a User-Agent string. This allows the isitup folks to look through their logs and see how often our script is being used on their site. Feel free to leave this set to this, or you can update it with any info you want.
 
+```php
 $user_agent = "IsitupForSlack/1.0 (https://github.com/mccreath/istiupforslack; mccreath@gmail.org)";
+```
 
 ### Now for the action
 
@@ -90,6 +92,10 @@ $token = $_POST['token'];
 ```
 
 This `if` statement will return a message to your user if the token doesn't match, saying it needs to be updated.
+
+Get the token from your configuration page:
+
+![Your slash command token](field-token.png)
 
 ```php
 #
@@ -253,6 +259,22 @@ Now, after all that set up and logic and design thinking, it's finally time for 
 echo $reply;
 ```
 That's it. That's all you have to to. Just echo the `$reply` string and cURL, which has been waiting patiently this whole time while we went through our machinations, will take that reply and post it back to the user in Slack.
+
+## Finish configuring the integration
+
+Now we to finish the set up. 
+
+Back on your configuration page, enter the **URL** where you've posted your PHP script.
+
+![Enter the URL of your script](field-url.png)
+
+Leave **Method** set to POST.
+
+![Method should be post](field-method.png)
+
+
+
+
 
 In the next part of the tutorial, we'll build on this part in two ways:
 
