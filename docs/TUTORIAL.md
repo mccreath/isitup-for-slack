@@ -1,16 +1,21 @@
+<!-- screenshots should be max 714 pixels wide -->
+
 # Custom Slash Command Tutorial
 
 Slack's custom slash commands perform a very simple task: they take whatever text you enter after the command itself (along with some other predefined values), send it to a URL, then accept whatever the script returns and posts it as a Slackbot message to the person who issued the command. What you do with that text at the URL is what makes slash commands so useful. 
 
 For example, you have a script that translates English to French, so you create a slash command called `/translate`, and expect that the user will enter an English word that they'd like translated into French. When the user types `/translate dog` into the Slack message field, Slack bundles up the text string `dog` with those other server variables and sends the whole thing to your script, which performs its task of finding the correct French word, `chien`, and sends it back to Slack along with whatever message you added with your script has, and Slack posts it back to the user as `The French word for "dog" is "chien"`. No one else on the team will see message, since it's from Slackbot to the user.
 
-<!-- screenshots should be 714 pixels wide -->
-
 This very simple demo will take you through the process of setting up a custom slash command (https://api.slack.com/slash-commands) using a third-party service. It's also the first part of a larger tutorial that will show you how to use a slash command to query a remote service and post the results to a channel, group, or DM.
 
-For part one, we'll be using [itisiup.org](http://isitup.org) to check whether a website is running. It's a handy service to use for this tutorial/demo because the [API is super simple](https://isitup.org/api/api.html), and because you don't need an API key to use the service. All you need to do is identify your script with a user agent string (which we'll cover in a bit).
+For this tutorial, we'll be using the web service [itisiup.org](http://isitup.org) to check whether a website is running. It's a good one to start with because the [API is super simple](https://isitup.org/api/api.html), and because you don't need an API key to use the service. All you need to do is identify your script to their servers.
 
-## The script
+The way isitup.org works is that you call a URL that specifies the domain you want to check and the format that you want to receive the data in. You can get JSON, JSONP, or comma-separate text. We're going to use JSON because PHP has some nice built-in tools for handling JSON. It's also a very common format for exchanging data between web services.
+
+The URL is formatted as `https://isitup.org/[DOMAIN TO SEARCH].[DATA FORMAT]`. So if we wanted to check on Amazon and get the results in JSON, the URL would be `https://isitup.org/amazon.com.json`. If we wanted to check the Whitehouse website and get the results as comma-separated values, it would be `https://isitup.org/whitehouse.gov.csv`. Simple!
+
+
+## What we'll write
 
 Our script is going to
 
@@ -19,6 +24,12 @@ Our script is going to
 * 	Accept the results returned by isitup and decide what to do with them.
 * 	Format the results into a proper JSON payload for the incoming webhook
 * 	Return the results to the person who used the slash command
+
+## What you'll need:
+
+*	A plain text editor. If you want a free one, I recommend TextWrangler for Mac (http://barebones.com/products/textwrangler/) or Notepad++ for Windows (http://notepad-plus-plus.org/)
+*	A hosting account running PHP 5 and cURL where you can put the script we're going to write. Pretty much any shared hosting account in the world should work for this.
+*	A Slack account (a free one is fine)
 
 ## What we'll be using
 
@@ -36,14 +47,6 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes webhooks work. The thing about cURL that's useful for us is that not only can you use it from the command line (which makes it easy to use for testing things), but you can interact with it from most modern scripting language. 
 
 	PHP has had support for cURL for years, and we're going to take advantage of that so that our script can receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
-
-## What you'll need:
-
-*	A plain text editor. If you want a free one, I recommend TextWrangler for Mac (http://barebones.com/products/textwrangler/) or Notepad++ for Windows (http://notepad-plus-plus.org/)
-*	A hosting account running PHP 5 and cURL where you can put the script we're going to write. Pretty much any shared hosting account in the world should work for this.
-*	A Slack account (a free one is fine)
-*	A custom slash command on Slack
-*	An internal webhook on Slack
 
 ## Set up your slash command
 
@@ -69,11 +72,13 @@ The isitup API requests that the client is identified by a User-Agent string. Th
 $user_agent = "IsitupForSlack/1.0 (https://github.com/mccreath/istiupforslack; mccreath@gmail.org)";
 ```
 
-### Now for the action
+### Set up some variables
 
 The first thing you need to do when the script is called by your slash command is grab some values the command sends over and make variables out of them. It's not strictly necessary to make new variables out of these, but it's a good habit to get into, because they're easier to reuse, and you can name them what you want.
 
-First, the command string itself. In our case, `isitup`
+All of the values can be found in a PHP array called `$_POST`, and they're all named values. To get the value of named item in a PHP you use the following format: `$array_name['key_name']`. That will return the value. In the case of our slash command, if we wanted to retrieve the text of the command itself, it would look like this: `$_POST['command']`. That will have the value of `isitup`.
+
+So following on, let's make a variable from the command string itself. In our case, `isitup`
 
 ```php
 $command = $_POST['command'];
@@ -108,11 +113,6 @@ if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){
 	echo $msg;
 }
 ```
-    
-    
-The way isitup works is that you call a URL that specifies the domain you want to check and the format that you want to receive the data in. You can get JSON, JSONP, or comma-separate text. We're going to use JSON because PHP has some nice built-in tools for handling JSON. It's also a very common format for exchanging data between web services.
-
-The URL is formatted as `https://isitup.org/[DOMAIN TO SEARCH].[DATA FORMAT]`. So if we wanted to check on Amazon and get the results in JSON, the URL would be `https://isitup.org/amazon.com.json`. If we wanted to check the Whitehouse website and get the results as comma-separated values, it would be `https://isitup.org/whitehouse.gov.csv`. Simple!
     
 We're going to take the text exactly as it's typed by the user, and rely on isitup to check the validity of the domain. If it's not a valid domain, isitup.org will respond with a `3`. We want to get the JSON version back.
 
