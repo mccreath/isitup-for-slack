@@ -100,7 +100,8 @@ This `if` statement will return a message to your user if the token doesn't matc
 
 Get the token from your configuration page:
 
-![Your slash command token](field-token.png)
+![Your slash command token](field-token.png)  
+_screenshot from the configuration page_
 
 ```php
 #
@@ -259,6 +260,16 @@ Now, after all that set up and logic and design thinking, it's finally time for 
 echo $reply;
 ```
 That's it. That's all you have to to. Just echo the `$reply` string and cURL, which has been waiting patiently this whole time while we went through our machinations, will take that reply and post it back to the user in Slack.
+
+*Status code `1`: The site is up.*  
+![The site is up.](message-up.png)
+
+*Status code `2`: The site is down.*
+![The site is down.](message-down.png)
+
+*Status code `3`: The domain is invalid.*
+![The domain is invalid.](message-invalid.png)
+
 
 ## Finish configuring the integration
 
