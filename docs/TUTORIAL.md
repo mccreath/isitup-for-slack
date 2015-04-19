@@ -181,15 +181,15 @@ if($ch_response === FALSE){
 Now we just need to see which of the three responses we got back. `1` means the site is up. `2` means the site is not up. `3` means the person who sent the command didn't write the domain properly, which usually means they left off the `.com` (or `.net`, `.org`, etc.). We're going to use a second `if` statement to test which number we got back and set the `$reply` variable to the correct message.
     
 ```php
-if ($response_array["status_code"] == 1){
+if ($response_array['status_code'] == 1){
     
 	$reply = "Good news! ".$response_array["domain"]." is up!";
 		
-}else if ($response_array["status_code"] == 2){
+}else if ($response_array['status_code'] == 2){
 	
 	$reply = "Oh no! ".$response_array["domain"]." is down!";
 		
-}else if($response_array["status_code"] == 3){
+}else if($response_array['status_code'] == 3){
 	
 	$reply  = "The domain you entered, ".$domain.", does not appear to be a valid domain. ";
 	$reply .= "Please enter both the domain name AND suffix (ex: amazon.com or whitehouse.gov).";
@@ -233,15 +233,15 @@ if($ch_response === FALSE){
 		
 }else{
 
-	if ($response_array["status_code"] == 1){
+	if ($response_array['status_code'] == 1){
 
 		$reply = ":thumbsup: I am happy to report that *<".$response_array["domain"].">* is *up*!";
 
-	}else if ($response_array["status_code"] == 2){
+	}else if ($response_array['status_code'] == 2){
 
 		$reply = ":disappointed: I am sorry to report that *<".$response_array["domain"].">* is *down*!";
 
-	}else if($response_array["status_code"] == 3){
+	}else if($response_array['status_code'] == 3){
 
 		$reply  = ":interrobang: *".$domain."* does not appear to be a valid domain. ";
 		$reply .= "Please enter both the domain name AND the suffix (ex: *amazon.com* or *whitehouse.gov*).";
@@ -273,7 +273,7 @@ That's it. That's all you have to to. Just echo the `$reply` string and cURL, wh
 
 ## Finish configuring the integration
 
-Now we to finish the set up. 
+The last thing to do is take care is finalizing the slash command configuration on Slack.
 
 Back on your configuration page, enter the **URL** where you've posted your PHP script.
 
@@ -283,11 +283,18 @@ Leave **Method** set to POST.
 
 ![Method should be post](field-method.png)
 
+Now decide whether you want to include your slash command in the auto-complete list of slash commands. This is handy if you think your command will be used frequently. Enter a description of the slash command, and some example usage.
+
+![Adding to autocomplete](field-autocomplete.png)
+
+Finally, add a descriptive label to help distinguish this slash command from the others in your team's list of configured integrations.
+
+![Add a descriptive label](field-label-save.png)
+
+Save it! Now your slash command is available to your team for use.
 
 
-
-
-In the next part of the tutorial, we'll build on this part in two ways:
+In the next tutorial, we'll build on this one in two ways:
 
 * Handling more complex information returned from the third-party service 
 * Sending the reply to Slack through an incoming webhook, which gives you more options for formatting and allows you to send the reply to any channel for everyone on the team to see.
