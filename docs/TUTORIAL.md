@@ -49,7 +49,7 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 
 Go to your integrations page at Slack (http://my.slack.com/services/new) and scroll down to the bottom section, "DIY Integrations & Customizations". Click on the "Add" button for "Slash Commands".
 
-![Add a slash command integration](add-slash-command-8.png)
+![Add a slash command integration](add-slash-command.png)
 
 Create the text command itself. This is the text that the user will type after the slash. In this case, `isitup` is clear and short, so let's stick with that. But you can use whatever makes the most sense for your command and your users.
 
