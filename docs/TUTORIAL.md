@@ -2,11 +2,19 @@
 
 # Custom Slash Command Tutorial
 
+This tutorial the first part in a series that will show you how to use a slash command to query a remote service and post the results to a channel, group, or DM.
+
+## About Slash Commands
+
 Slack's custom slash commands perform a very simple task: they take whatever text you enter after the command itself (along with some other predefined values), send it to a URL, then accept whatever the script returns and posts it as a Slackbot message to the person who issued the command. What you do with that text at the URL is what makes slash commands so useful. 
 
 For example, you have a script that translates English to French, so you create a slash command called `/translate`, and expect that the user will enter an English word that they'd like translated into French. When the user types `/translate dog` into the Slack message field, Slack bundles up the text string `dog` with those other server variables and sends the whole thing to your script, which performs its task of finding the correct French word, `chien`, and sends it back to Slack along with whatever message you added with your script has, and Slack posts it back to the user as `The French word for "dog" is "chien"`. No one else on the team will see message, since it's from Slackbot to the user.
 
 This very simple demo will take you through the process of setting up a custom slash command (https://api.slack.com/slash-commands) using a third-party service. It's also the first part of a larger tutorial that will show you how to use a slash command to query a remote service and post the results to a channel, group, or DM.
+
+If you're familiar with PHP, JSON, and cURL, you can probably find all the info you need in the comments of the `isitup.php` script. If you're curious, read on!
+
+## About This Tutorial
 
 For this tutorial, we'll be using the web service [itisiup.org](http://isitup.org) to check whether a website is running. It's a good one to start with because the [API is super simple](https://isitup.org/api/api.html), and because you don't need an API key to use the service. All you need to do is identify your script to their servers.
 
@@ -14,8 +22,7 @@ The way isitup.org works is that you call a URL that specifies the domain you wa
 
 The URL is formatted as `https://isitup.org/[DOMAIN TO SEARCH].[DATA FORMAT]`. So if we wanted to check on Amazon and get the results in JSON, the URL would be `https://isitup.org/amazon.com.json`. If we wanted to check the Whitehouse website and get the results as comma-separated values, it would be `https://isitup.org/whitehouse.gov.csv`. Simple!
 
-
-## What we'll write
+### What we'll write
 
 Our script is going to
 
@@ -25,13 +32,13 @@ Our script is going to
 * 	Format the results into a proper JSON payload for the incoming webhook
 * 	Return the results to the person who used the slash command
 
-## What you'll need:
+### What you'll need:
 
 *	A plain text editor. If you want a free one, I recommend TextWrangler for Mac (http://barebones.com/products/textwrangler/) or Notepad++ for Windows (http://notepad-plus-plus.org/)
 *	A hosting account running PHP 5 and cURL where you can put the script we're going to write. Pretty much any shared hosting account in the world should work for this.
 *	A Slack account (a free one is fine)
 
-## What we'll be using
+### What we'll be using
 
 Don't worry too much if you've never used one or more of these. Our use of them will be thoroughly explained in the tutorial.
 
