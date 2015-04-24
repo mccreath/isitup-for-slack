@@ -210,7 +210,7 @@ The first thing we check is whether the
 ```php
 if($ch_response === FALSE){
 
-	# isitup.org could not be reached 
+  # isitup.org could not be reached 
   $reply = "Ironically, isitup could not be reached.";
 	
 } else {
