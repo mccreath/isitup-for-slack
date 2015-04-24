@@ -210,8 +210,8 @@ The first thing we check is whether the
 ```php
 if($ch_response === FALSE){
 
-    # isitup.org could not reach the domain entered by the user 
-    $reply = $url_to_check." could not be reached.";
+	# isitup.org could not be reached 
+  $reply = "Ironically, isitup could not be reached.";
 	
 } else {
 
@@ -270,8 +270,8 @@ Now our entire `if` statement looks like this:
 ```php
 if($ch_response === FALSE){
 
-	# isitup.org could not reach the domain entered by the user 
-	$reply = $url_to_check." could not be reached.";
+  # isitup.org could not be reached 
+  $reply = "Ironically, isitup could not be reached.";
 		
 }else{
 
