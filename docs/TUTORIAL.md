@@ -2,7 +2,7 @@
 
 # Custom Slash Command Tutorial
 
-This tutorial the first part in a series that will show you how to use a slash command to query a remote service and post the results to a channel, group, or DM.
+This tutorial is the first part of a two-part series that will show you how to set up a slash command. In the second part, we'll extend that to using a slash command to query a remote service and post the results to a channel, group, or DM in a webhook.
 
 ## About Slash Commands
 
@@ -162,7 +162,22 @@ And finally, close the cURL connection.
 curl_close($ch);
 ```
 
-After all that, we now have a variable called `$ch_response` that contains the response from isitup.org. The response will be in a JSON string and to use that JSON string, we need to get into an array. To do that, we'll pass the string to the built-in PHP function `json_decode()`. This will turn a JSON string into an object or, if you set the second parameter to `TRUE`, into an array. Arrays are a little easier to work with, so we'll use that option. Notice that we're putting the decoded array into a variable.
+After all that, we now have a variable called `$ch_response` that contains the response from isitup.org. The response will be in a JSON string, which looks something like this:
+
+```json
+{
+    "domain": "duckduckgo.com",
+    "port": 80,
+    "status_code": 1,
+    "response_ip": "46.51.197.88",
+    "response_code": 200,
+    "response_time": 0.025
+}
+```
+
+
+
+To do that, we'll pass the string to the built-in PHP function `json_decode()`. This will turn a JSON string into an object or, if you set the second parameter to `TRUE`, into an array. Arrays are a little easier to work with, so we'll use that option. Notice that we're putting the decoded array into a variable.
 
 ```php
 $response_array = json_decode($ch_response, true);
