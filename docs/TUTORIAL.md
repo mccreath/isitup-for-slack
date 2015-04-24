@@ -69,7 +69,7 @@ For now you can leave everything else empty. We'll come back and finish setting 
 
 ## The PHP script
 
-Now we're going to go step by step through the PHP script. If PHP isn't your jam, this should still be pretty simple to apply to the language of your choice. 
+Now we're going to go step by step through the PHP script. If PHP isn't your jam, this should still be pretty simple to apply to the language of your choice. Create a new file in your text editor called `isitup.php`. Save it some place where you'll be able to get to it easily when it's time to upload it.
 
 ### Set up your user agent string
 
@@ -175,15 +175,35 @@ After all that, we now have a variable called `$ch_response` that contains the r
 }
 ```
 
+That's great and easy to read (which is part of why JSON exists, but there's a programming data structure called an array that's much more efficient to work with than strings. Luckily, PHP has tools to handle the conversion for us!
 
-
-To do that, we'll pass the string to the built-in PHP function `json_decode()`. This will turn a JSON string into an object or, if you set the second parameter to `TRUE`, into an array. Arrays are a little easier to work with, so we'll use that option. Notice that we're putting the decoded array into a variable.
+To convert the string to an array, we'll pass it to the built-in PHP function `json_decode()`. This will turn a JSON string into an object or, if you set the second parameter to `TRUE`, into an array. Arrays are a little easier to work with, so we'll use that option. Notice that we're putting the decoded array into a variable.
 
 ```php
 $response_array = json_decode($ch_response, true);
 ```
 
-Now we can take our array and put together the message that we're going to send back to the user. Since there are a few possible responses from isitup.org, we'll use an `if` statement to see which response we got, then set up the message for that. 
+For comparison, an array is represented like this:
+
+```php
+array(
+    "domain" => "duckduckgo.com",
+    "port" => 80,
+    "status_code" => 1,
+    "response_ip" => "46.51.197.88",
+    "response_code" => 200,
+    "response_time" => 0.025
+);
+```
+
+It's a little abstract, and in practice, you won't see any of this happen, but using an array allows us to access the values that `isitup.org` sent to us using the same format that we used to set the variables from the `$_POST` array up at the top of the script, like this:
+
+```php
+$response_array['domain']
+$response_array['status_code']
+```
+
+Now we can take that `$response_array` and put together the message that we're going to send back to the user. Since there are a few possible responses from isitup.org, we'll use an `if` statement to see which response we got, then set up the message for that. 
 
 The first thing we check is whether the 
 
@@ -291,6 +311,13 @@ That's it. That's all you have to to. Just echo the `$reply` string and cURL, wh
 
 *Status code `3`: The domain is invalid.*
 ![The domain is invalid.](message-invalid.png)
+
+
+### Upload the script to your server
+
+If you haven't already put your script on your hosting account server, now is the time to do that. I like to keep scripts like this in their own folders, but use whatever organization works for you. The important thing is to make note of what the URL is for the script for the configuration page.
+
+So if your web address is `http://superhype.com/` and you put your script in a directory called `isitup`, the URL would be `http://superhype.com/isitup/isitup.php`.
 
 
 ## Finish configuring the integration
