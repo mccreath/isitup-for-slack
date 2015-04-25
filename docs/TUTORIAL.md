@@ -202,7 +202,7 @@ $response_array['status_code']
 
 Now we can take the values from `$response_array` and put together the message that we're going to send back to the user. Since there are a few possible responses from isitup.org, we'll use an `if` statement to see which response we got, then set up the message for that. 
 
-The first thing we check is whether the 
+The first thing we check is whether the script can reach isitup.org. We do that by checking whether the `$ch_response` came back with anything. 
 
 ```php
 if($ch_response === FALSE){
