@@ -1,6 +1,4 @@
-<!-- screenshots should be max 714 pixels wide -->
-
-# Custom Slash Command Tutorial
+# Creating Custom Slash Commands for Slack
 
 This tutorial is the first part of a two-part series that will show you how to set up a slash command. In the second part, we'll extend that to using a slash command to query a remote service and post the results to a channel, group, or DM in a webhook.
 
@@ -43,6 +41,9 @@ Our script is going to
 Don't worry too much if you've never used one or more of these. Our use of them will be thoroughly explained in the tutorial.
 
 * 	PHP (http://php.net)
+
+	A commonly available and widely-used server-side scripting language. 
+
 * 	JSON (JavaScript Object Notation - http://json.org/)
 
 	JSON is a simple way to represent and exchange data.
@@ -51,9 +52,7 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 
 	If you're familiar with cURL, feel free to jump over this section.
 
-	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes webhooks work. The thing about cURL that's useful for us is that not only can you use it from the command line (which makes it easy to use for testing things), but you can interact with it from most modern scripting language. 
-
-	PHP has had support for cURL for years, and we're going to take advantage of that so that our script can receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
+	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes slash commands (and webhooks, as we'll see later) work. One of the great things about cURL is that you can use it from the command line (which makes it easy to use for testing things), or you can interact with it from most modern scripting languages, including PHP. We're going to take advantage of that and use it in our script to receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
 
 ## Set up your slash command
 
@@ -65,7 +64,7 @@ Create the text command itself. This is the text that the user will type after t
 
 ![Create the command](choose-command.png)
 
-For now you can leave everything else empty. We'll come back and finish setting this up in a bit. Just scroll down to the bottom and click the "Save Integration" button.
+For now you can leave everything else empty. We'll come back and finish setting this up in a bit. Just scroll down to the bottom and click the "Save Integration" button, but don't close the page yet.
 
 ## The PHP script
 
@@ -83,7 +82,7 @@ $user_agent = "IsitupForSlack/1.0 (https://github.com/mccreath/istiupforslack; m
 
 The first thing you need to do when the script is called by your slash command is grab some values the command sends over and make variables out of them. It's not strictly necessary to make new variables out of these, but it's a good habit to get into, because they're easier to reuse, and you can name them what you want.
 
-All of the values can be found in a PHP array called `$_POST`, and they're all named values. To get the value of named item in a PHP you use the following format: `$array_name['key_name']`. That will return the value. In the case of our slash command, if we wanted to retrieve the text of the command itself, it would look like this: `$_POST['command']`. That will have the value of `isitup`.
+All of the values can be found in a PHP array called `$_POST`, and they're all named values. To get the value of a named item in a PHP array, you use the following format: `$array_name['item_name']`. That will return the value. In the case of our slash command, if we wanted to retrieve the text of the command itself, it would look like this: `$_POST['command']`. That will have the value of `isitup`.
 
 So following on, let's make a variable from the command string itself. In our case, `isitup`
 
@@ -175,12 +174,10 @@ After all that, we now have a variable called `$ch_response` that contains the r
 }
 ```
 
-That's great and easy to read (which is part of why JSON exists, but there's a programming data structure called an array that's much more efficient to work with than strings. Luckily, PHP has tools to handle the conversion for us!
-
-To convert the string to an array, we'll pass it to the built-in PHP function `json_decode()`. This will turn a JSON string into an object or, if you set the second parameter to `TRUE`, into an array. Arrays are a little easier to work with, so we'll use that option. Notice that we're putting the decoded array into a variable.
+That's easy to read and easy to pass around the Internet, which is great. It's why JSON exists. But it's easier and more efficient to get the work with an array than with a string. Luckily, PHP has tools to convert JSON data to a PHP array. We'll pass the string to the built-in PHP function `json_decode()`. This will turn a JSON string into either an object or an array, if you set the second parameter to `TRUE`. Arrays are a little easier to work with, so we'll use that option. Notice that we're putting the decoded array into a variable.
 
 ```php
-$response_array = json_decode($ch_response, true);
+$response_array = json_decode($ch_response, TRUE);
 ```
 
 For comparison, an array is represented like this:
@@ -203,7 +200,7 @@ $response_array['domain']
 $response_array['status_code']
 ```
 
-Now we can take that `$response_array` and put together the message that we're going to send back to the user. Since there are a few possible responses from isitup.org, we'll use an `if` statement to see which response we got, then set up the message for that. 
+Now we can take the values from `$response_array` and put together the message that we're going to send back to the user. Since there are a few possible responses from isitup.org, we'll use an `if` statement to see which response we got, then set up the message for that. 
 
 The first thing we check is whether the 
 
@@ -220,7 +217,7 @@ if($ch_response === FALSE){
 }
 ```
     
-Now we just need to see which of the three responses we got back. `1` means the site is up. `2` means the site is not up. `3` means the person who sent the command didn't write the domain properly, which usually means they left off the `.com` (or `.net`, `.org`, etc.). We're going to use a second `if` statement to test which number we got back and set the `$reply` variable to the correct message.
+Next we need to see which of the three responses we got back. `1` means the site is up. `2` means the site is not up. `3` means the person who sent the command didn't write the domain properly, which usually means they left off the `.com` (or `.net`, `.org`, etc.). We're going to use a second `if` statement to test which number we got back and set the `$reply` variable to the correct message.
     
 ```php
 if ($response_array['status_code'] == 1){
@@ -343,10 +340,24 @@ Finally, add a descriptive label to help distinguish this slash command from the
 Save it! Now your slash command is available to your team for use.
 
 
+## Next steps
+
 In the next tutorial, we'll build on this one in two ways:
 
 * Handling more complex information returned from the third-party service 
 * Sending the reply to Slack through an incoming webhook, which gives you more options for formatting and allows you to send the reply to any channel for everyone on the team to see.
+
+### Further reading
+
+This tutorial touched several topics, and there's a lot more to learn about all of them.
+
+* Message formatting on Slack: https://api.slack.com/docs/formatting
+* cURL Basics: http://httpkit.com/resources/HTTP-from-the-Command-Line/
+* PHP Arrays: http://www.w3schools.com/php/php_arrays.asp
+* Using JSON: http://www.copterlabs.com/blog/json-what-it-is-how-it-works-how-to-use-it/
+
+
+
 
 
 
