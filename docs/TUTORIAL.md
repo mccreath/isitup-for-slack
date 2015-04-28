@@ -16,9 +16,9 @@ If you're familiar with PHP, JSON, and cURL, you can probably find all the info 
 
 For this tutorial, we'll be using the web service [itisiup.org](http://isitup.org) to check whether a website is running. It's a good one to start with because the [API is super simple](https://isitup.org/api/api.html), and because you don't need an API key to use the service. All you need to do is identify your script to their servers.
 
-The way isitup.org works is that you call a URL that specifies the domain you want to check and the format that you want to receive the data in. You can get JSON, JSONP, or comma-separate text. We're going to use JSON because PHP has some nice built-in tools for handling JSON. It's also a very common format for exchanging data between web services.
+The way isitup.org works is that you call a URL that specifies the domain you want to check and the format that you want to receive the data in. You can get JSON, JSONP, or comma-separate text. JSON stands for JavaScript Object Notation, and it's a common format for exchanging data between web services. It also happens that PHP has some nice built-in tools for working with it, so we're going to use the JSON option.
 
-The URL is formatted as `https://isitup.org/[DOMAIN TO SEARCH].[DATA FORMAT]`. So if we wanted to check on Amazon and get the results in JSON, the URL would be `https://isitup.org/amazon.com.json`. If we wanted to check the Whitehouse website and get the results as comma-separated values, it would be `https://isitup.org/whitehouse.gov.csv`. Simple!
+The URL is formatted as `https://isitup.org/[DOMAIN TO SEARCH].[DATA FORMAT]`. So if we wanted to check on Amazon and get the results in JSON, the URL would be `https://isitup.org/amazon.com.json`. If we wanted to check the Whitehouse website and get the results as comma-separated values, it would be `https://isitup.org/whitehouse.gov.txt`. Simple!
 
 ### What we'll write
 
@@ -46,7 +46,7 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 
 * 	JSON (JavaScript Object Notation - http://json.org/)
 
-	JSON is a simple way to represent and exchange data.
+	JSON is a simple way to represent and exchange data. It's an open standard format that uses human-readable text to transmit data objects consisting of key–value pairs.
 
 * 	cURL (http://curl.haxxe.se)
 
@@ -75,7 +75,7 @@ Now we're going to go step by step through the PHP script. If PHP isn't your jam
 The isitup API requests that the client is identified by a User-Agent string. This allows the isitup folks to look through their logs and see how often our script is being used on their site. Feel free to leave this set to this, or you can update it with any info you want.
 
 ```php
-$user_agent = "IsitupForSlack/1.0 (https://github.com/mccreath/istiupforslack; mccreath@gmail.org)";
+$user_agent = "IsitupForSlack/1.0 (https://github.com/mccreath/istiupforslack; mccreath@gmail.com)";
 ```
 
 ### Set up some variables
