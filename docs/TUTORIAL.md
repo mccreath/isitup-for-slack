@@ -12,6 +12,8 @@ This very simple demo will take you through the process of setting up a custom s
 
 If you're familiar with PHP, JSON, and cURL, you can probably find all the info you need in the comments of the `isitup.php` script. If you're curious, read on!
 
+You can download the completed script here: https://github.com/mccreath/isitup-for-slack/
+
 ## About This Tutorial
 
 For this tutorial, we'll be using the web service [itisiup.org](http://isitup.org) to check whether a website is running. It's a good one to start with because the [API is super simple](https://isitup.org/api/api.html), and because you don't need an API key to use the service. All you need to do is identify your script to their servers.
@@ -355,6 +357,13 @@ This tutorial touched several topics, and there's a lot more to learn about all 
 * cURL Basics: http://httpkit.com/resources/HTTP-from-the-Command-Line/
 * PHP Arrays: http://www.w3schools.com/php/php_arrays.asp
 * Using JSON: http://www.copterlabs.com/blog/json-what-it-is-how-it-works-how-to-use-it/
+
+
+## Download This Project
+
+If you haven't downloaded the completed script yet, you can get it here: https://github.com/mccreath/isitup-for-slack/
+
+
 
 
 
