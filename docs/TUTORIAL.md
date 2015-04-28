@@ -48,7 +48,7 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 
 * 	JSON (JavaScript Object Notation - http://json.org/)
 
-	JSON is a simple way to represent and exchange data. It's an open standard format that uses human-readable text to transmit data objects consisting of key–value pairs.
+	JSON is a simple way to represent and exchange data. It's an open standard format that uses human-readable text to transmit data objects consisting of key-value pairs.
 
 * 	cURL (http://curl.haxxe.se)
 
