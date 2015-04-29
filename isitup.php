@@ -70,10 +70,10 @@ if($ch_response === FALSE){
 }else{
   if($response_array["status_code"] == 1){
   	# Yay, the domain is up! 
-    $reply = ":thumbsup: I am happy to report that *<".$response_array["domain"].">* is *up*!";
+    $reply = ":thumbsup: I am happy to report that *<http://".$response_array["domain"]."|".$response_array["domain"].">* is *up*!";
   } else if($response_array["status_code"] == 2){
     # Boo, the domain is down. 
-    $reply = ":disappointed: I am sorry to report that *<".$response_array["domain"].">* is *not up*!";
+    $reply = ":disappointed: I am sorry to report that *".$response_array["domain"]."* is *not up*!";
   } else if($response_array["status_code"] == 3){
     # Uh oh, isitup.org doesn't think the domain entered by the user is valid
     $reply = ":interrobang: *".$text."* does not appear to be a valid domain. \n";
