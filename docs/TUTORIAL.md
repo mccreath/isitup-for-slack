@@ -248,7 +248,15 @@ To bold any text in a Slackbot message, just put a single asterisk on either sid
 
 To turn any URL in a Slackbot message into a link, just put an angle bracket on either side of it. Luckily for this slash command, a simple domain name is enough for Slack's servers to create a link. In the following sentence, the domain will be displayed as a link to that site.
 
-    One of the largest online retailers is <amazon.com>.
+    One of the largest online retailers is <http://amazon.com>.
+    
+But we can go one step further. Because the user only types in the domain, it makes more sense to display only the domain in the reply. We can still link it, but it takes a little more work. The format for linking text in an incoming message on Slack is `domain` + `|` (that's the pipe character) + `text`. 
+
+    <http://domain.com/to/link/|text to link>
+
+For our message, we're going to be linking the text of the domain itself, so the code will look a little redundant, but the output will be much nicer. We're going to do this:
+
+    <http://".$response_array["domain"]."|".$response_array["domain"].">
 
 For status `1`, the site is up, let's use the universal affirmative of "thumbs up". Then linking the domain and bolding the status would give us a string that looks like this:
 
@@ -276,11 +284,11 @@ if($ch_response === FALSE){
 
 	if ($response_array['status_code'] == 1){
 
-		$reply = ":thumbsup: I am happy to report that *<".$response_array["domain"].">* is *up*!";
+		$reply = ":thumbsup: I am happy to report that *<http://".$response_array["domain"]."|".$response_array["domain"].">* is *up*!";
 
 	}else if ($response_array['status_code'] == 2){
 
-		$reply = ":disappointed: I am sorry to report that *<".$response_array["domain"].">* is *down*!";
+		$reply = ":disappointed: I am sorry to report that *<http://".$response_array["domain"]."|".$response_array["domain"].">* is *down*!";
 
 	}else if($response_array['status_code'] == 3){
 
