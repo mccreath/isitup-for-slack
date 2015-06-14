@@ -4,7 +4,7 @@
 
 REQUIREMENTS
 
-* A custom slash commant on a Slack team
+* A custom slash command on a Slack team
 * A web server running PHP5 with cURL enabled
 
 USAGE
@@ -18,7 +18,7 @@ USAGE
 * Leave "Method" set to "Post".
 * Decide whether you want this command to show in the 
   autocomplete list for slash commands.
-* If you do, enter a short description and usage hing.
+* If you do, enter a short description and usage hint.
 
 */
 
