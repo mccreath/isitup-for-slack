@@ -1,20 +1,27 @@
-# Creating Custom Slash Commands for Slack
+# Your First Custom Slash Command for Slack
 
-This tutorial is the first part of a two-part series that will show you how to set up a slash command. In the second part, we'll extend that to using a slash command to query a remote service and post the results to a channel, group, or DM in a webhook.
-
-## About Slash Commands
-
-Slack's custom slash commands perform a very simple task: they take whatever text you enter after the command itself (along with some other predefined values), send it to a URL, then accept whatever the script returns and posts it as a Slackbot message to the person who issued the command. What you do with that text at the URL is what makes slash commands so useful. 
-
-For example, you have a script that translates English to French, so you create a slash command called `/translate`, and expect that the user will enter an English word that they'd like translated into French. When the user types `/translate dog` into the Slack message field, Slack bundles up the text string `dog` with those other server variables and sends the whole thing to your script, which performs its task of finding the correct French word, `chien`, and sends it back to Slack along with whatever message you added with your script has, and Slack posts it back to the user as `The French word for "dog" is "chien"`. No one else on the team will see message, since it's from Slackbot to the user.
-
-This very simple demo will take you through the process of setting up a custom slash command (https://api.slack.com/slash-commands) using a third-party service. It's also the first part of a larger tutorial that will show you how to use a slash command to query a remote service and post the results to a channel, group, or DM.
-
-If you're familiar with PHP, JSON, and cURL, you can probably find all the info you need in the comments of the `isitup.php` script. If you're curious, read on!
+This tutorial is the first part of a two-part series. This part will show you how to set up and process a simple slash command. The second part will work with more complex data and different message options.
 
 You can download the completed script here: https://github.com/mccreath/isitup-for-slack/
 
-## About This Tutorial
+## How Slack's Slash Commands Work
+
+A slash command performs a very simple task: it takes whatever text you enter after the command itself and sends it to a URL. Then it receives whatever that URL returns and posts it as a message in Slack. By default this message visible only to the person who issued the command, and that’s what this tutorial will do. We’ll get into posting the message for everyone in a channel to see in the next tutorial.
+
+**What makes slash commands so useful and powerful is what you do with that text at the URL.**
+
+For example, you have a script that translates English to French, so you create a slash command called `/translate`, and expect that the user will enter an English word that they'd like translated into French. When the user types `/translate dog` into the Slack message field, Slack bundles up the text string `dog` with those other server variables and sends the whole thing to your script, which performs its task of finding the correct French word, `chien`, and sends it back to Slack along with whatever message you added with your script has, and Slack posts it back to the user as `The French word for "dog" is "chien"`. No one else on the team will see message, since it's from Slackbot to the user.
+
+1.	Slack bundles up the text string dog with those other server variables and sends the whole thing to your script on your server.
+2.	The script performs its task of finding the correct French word, chien
+3.	The script sends it back to Slack along with whatever additional information or message you added with your script
+4.	Slack posts it back to the user as The French word for “dog” is “chien”. By default, no one else on the team will see message.
+
+This very simple demo will take you through the process of setting up a custom slash command (https://api.slack.com/slash-commands) using a third-party service. It's also the first part of a larger tutorial that will show you how to use a slash command to query a remote service and post the results to a channel, group, or DM.
+
+If you're familiar with PHP, JSON, and cURL, you can probably find all the info you need in the comments of the `isitup.php` script in this repo. If you’re curious about the nuts and bolts, read on!
+
+## What we're going to do
 
 For this tutorial, we'll be using the web service [itisiup.org](http://isitup.org) to check whether a website is running. It's a good one to start with because the [API is super simple](https://isitup.org/api/api.html), and because you don't need an API key to use the service. All you need to do is identify your script to their servers.
 
@@ -22,7 +29,7 @@ The way isitup.org works is that you call a URL that specifies the domain you wa
 
 The URL is formatted as `https://isitup.org/[DOMAIN TO SEARCH].[DATA FORMAT]`. So if we wanted to check on Amazon and get the results in JSON, the URL would be `https://isitup.org/amazon.com.json`. If we wanted to check the Whitehouse website and get the results as comma-separated values, it would be `https://isitup.org/whitehouse.gov.txt`. Simple!
 
-### What we'll write
+### What we're going to write
 
 Our script is going to
 
@@ -32,13 +39,13 @@ Our script is going to
 * 	Format the results into a proper JSON payload for the incoming webhook
 * 	Return the results to the person who used the slash command
 
-### What you'll need:
+### Tools you'll need:
 
 *	A plain text editor. If you want a free one, I recommend TextWrangler for Mac (http://barebones.com/products/textwrangler/) or Notepad++ for Windows (http://notepad-plus-plus.org/)
 *	A hosting account running PHP 5 and cURL where you can put the script we're going to write. Pretty much any shared hosting account in the world should work for this.
 *	A Slack account (a free one is fine)
 
-### What we'll be using
+### What we'll be using on the server 
 
 Don't worry too much if you've never used one or more of these. Our use of them will be thoroughly explained in the tutorial.
 
@@ -52,17 +59,17 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 
 * 	cURL (http://curl.haxxe.se)
 
-	If you're familiar with cURL, feel free to jump over this section.
+	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes slash commands (and webhooks, as we'll see later) work. 
 
-	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes slash commands (and webhooks, as we'll see later) work. One of the great things about cURL is that you can use it from the command line (which makes it easy to use for testing things), or you can interact with it from most modern scripting languages, including PHP. We're going to take advantage of that and use it in our script to receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
+	One of the great things about cURL is that you can use it from the command line (which makes it easy to use for testing things), or you can interact with it from most modern scripting languages, including PHP. We're going to take advantage of that and use it in our script to receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
 
 ## Set up your slash command
 
-Go to your integrations page at Slack (http://my.slack.com/services/new) and scroll down to the bottom section, "DIY Integrations & Customizations". Click on the "Add" button for "Slash Commands".
+Go to [https://slack.com/apps/A0F82E8CA-slash-commands](https://slack.com/apps/A0F82E8CA-slash-commands) to add a new slash command (you’ll need to be signed in). Click the “Add Configuration” button to start the process.
 
 ![Add a slash command integration](add-slash-command.png)
 
-Create the text command itself. This is the text that the user will type after the slash. In this case, `isitup` is clear and short, so let's stick with that. But you can use whatever makes the most sense for your command and your users.
+Next, choose the text command itself. This is the text that the user will type after the slash. In this case, `isitup` is clear and short, so let's stick with that. But you can use whatever makes the most sense for your command and your users.
 
 ![Create the command](choose-command.png)
 
@@ -104,19 +111,16 @@ The token is an additional identifier that's sent with the slash command that yo
 $token = $_POST['token'];
 ```
 
-This `if` statement will return a message to your user if the token doesn't match, saying it needs to be updated.
-
-Get the token from your configuration page:
+Here's an example of an `if` statement that will return a message to your user if the token doesn’t match, saying it needs to be updated. Copy the token from your configuration page to use in your `if` statement:
 
 ![Your slash command token](field-token.png)  
-_screenshot from the configuration page_
 
 ```php
 #
 # replace this token with the token from your slash command configuration page
 #
 
-if($token != 'vnLfaOlI7natbpU5tKQBm5dQ'){ 
+if($token != 'zNvYk1lDMEwvHHhZrWApVhfv'){ 
 	$msg = "The token for the slash command doesn't match. Check your script.";
 	die($msg);
 	echo $msg;
@@ -129,7 +133,7 @@ We're going to take the text exactly as it's typed by the user, and rely on isit
 $url_to_check = "https://isitup.org/".$domain.".json";
 ```
 
-Okay, we've got all our information. Now we need to send the URL to isitup.org. 
+Now that we've got all our information, we just need to send the URL to isitup.org. 
 
 First, we initialize cURL and tell it what URL we want it to open. We pass in our variable `$url_to_check`.
 
@@ -137,7 +141,7 @@ First, we initialize cURL and tell it what URL we want it to open. We pass in ou
 $ch = curl_init($url_to_check);
 ```
 
-Next we set up some options to tell cURL how to handle the tasks associate with opening the URL.
+Next we set some cURL options to handle some specific tasks associated with opening the URL.
 
 This first one sends in the user agent string that we created up above.
 
@@ -145,13 +149,13 @@ This first one sends in the user agent string that we created up above.
 curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
 ```
 
-The second one tells cURL we expect to get some kind of information back from the URL, and we want to get that information.
+The second option tells cURL we expect to get some kind of information back from the URL, and we want to get that information.
 
 ```php
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 ```
     
-Now we can make the call. By assigning the call to a variable, we give cURL a place to actually store the information returned from isitup.org.
+With those in place, we can now call the URL. By assigning the call to a variable, we have a place to store the information returned from isitup.org.
 
 ```php
 $ch_response = curl_exec($ch);
@@ -163,7 +167,7 @@ And finally, close the cURL connection.
 curl_close($ch);
 ```
 
-After all that, we now have a variable called `$ch_response` that contains the response from isitup.org. The response will be in a JSON string, which looks something like this:
+We now have a variable called `$ch_response` that contains the response from isitup.org. The response will be in a JSON string, which looks something like this:
 
 ```json
 {
@@ -176,13 +180,13 @@ After all that, we now have a variable called `$ch_response` that contains the r
 }
 ```
 
-That's easy to read and easy to pass around the Internet, which is great. It's why JSON exists. But it's easier and more efficient to get the work with an array than with a string. Luckily, PHP has tools to convert JSON data to a PHP array. We'll pass the string to the built-in PHP function `json_decode()`. This will turn a JSON string into either an object or an array, if you set the second parameter to `TRUE`. Arrays are a little easier to work with, so we'll use that option. Notice that we're putting the decoded array into a variable.
+That’s easy to read and easy to pass around the Internet, which is great. It’s why JSON exists. However, it’s easier and more efficient to work with an array than with a string so it’s a good thing that PHP has tools to convert JSON data to a PHP array. We’ll pass the string to the built-in PHP function `json_decode()`. By default this function will turn a JSON string into an object, but you can optionally turn it into an array by setting the second parameter to `TRUE`. Arrays are a little easier to work with than objects, so we’ll use that option. Notice that we’re putting the decoded array into its own variable.
 
 ```php
 $response_array = json_decode($ch_response, TRUE);
 ```
 
-For comparison, an array is represented like this:
+For comparison to the JSON string, a PHP array is represented like this:
 
 ```php
 array(
@@ -195,14 +199,14 @@ array(
 );
 ```
 
-It's a little abstract, and in practice, you won't see any of this happen, but using an array allows us to access the values that `isitup.org` sent to us using the same format that we used to set the variables from the `$_POST` array up at the top of the script, like this:
+The difference a little abstract in presentation, and in practice, you won't see any of this happen. But using an array allows us to access the values that `isitup.org` sent to us using the same format that we used to set the variables from the `$_POST` array up at the top of the script, like this:
 
 ```php
 $response_array['domain']
 $response_array['status_code']
 ```
 
-Now we can take the values from `$response_array` and put together the message that we're going to send back to the user. Since there are a few possible responses from isitup.org, we'll use an `if` statement to see which response we got, then set up the message for that. 
+Now we can take the values from `$response_array` and put together the message that we're going to send back to the user. Since there are a few possible responses from isitup.org, we'll use an `if` statement to test which response we gotand make sure the message has the correct information. 
 
 The first thing we check is whether the script can reach isitup.org. We do that by checking whether the `$ch_response` came back with anything. 
 
@@ -219,7 +223,7 @@ if($ch_response === FALSE){
 }
 ```
     
-Next we need to see which of the three responses we got back. `1` means the site is up. `2` means the site is not up. `3` means the person who sent the command didn't write the domain properly, which usually means they left off the `.com` (or `.net`, `.org`, etc.). We're going to use a second `if` statement to test which number we got back and set the `$reply` variable to the correct message.
+Assuming that we did reach isitup.org, we need to see which of the three responses we got back. `1` means the site is up. `2` means the site is not up. `3` means the person who sent the command didn't write the domain properly, which usually means they left off the `.com` (or `.net`, `.org`, etc.). We're going to use a second `if` statement to test which number we got back and set the `$reply` variable to the correct message.
     
 ```php
 if ($response_array['status_code'] == 1){
@@ -240,11 +244,11 @@ if ($response_array['status_code'] == 1){
 	
 ### Add some visual cues
 
-One thing that might not be obvious at this point is that our messages to the user are not very differentiated. By default, Slackbot responses are dark gray instead of black, and they're italicized. These two things help set them apart from other messages, but we can take a couple of more steps to make sure that each of our messages is easier to interpret. Slack lets you use emoji in your messages, so we'll add a different emoji to each status, then we'll bold the status of the site to make it stand out a little more, and we'll link the domain name.
+One thing that might not be obvious at this point is that all three versions of our message will look very similar to the user. By default, Slackbot responses are dark gray instead of black, and they're italicized. These two things help set them apart from other messages, but we can take a couple of more steps to make sure that each of our messages is easier to interpret. Slack lets you use emoji in your messages, so we'll add a different emoji to each status, then we'll bold the status of the site to make it stand out a little more, and we'll link the domain name.
 
 To bold any text in a Slackbot message, just put a single asterisk on either side, with no spaces between the asterisks and the text. In the following sentence, "a bold phrase" will be displayed in bold type.
 
-    Here's some text with *a bold phrase*.
+    Here's some text with *a bold statement*.
 
 To turn any URL in a Slackbot message into a link, just put an angle bracket on either side of it. Luckily for this slash command, a simple domain name is enough for Slack's servers to create a link. In the following sentence, the domain will be displayed as a link to that site.
 
@@ -339,7 +343,7 @@ Leave **Method** set to POST.
 
 ![Method should be post](field-method.png)
 
-Now decide whether you want to include your slash command in the auto-complete list of slash commands. This is handy if you think your command will be used frequently. Enter a description of the slash command, and some example usage.
+Next you need to decide whether you want to include your slash command in the auto-complete list of slash commands. This is handy if you think your command will be used frequently. Enter a description of the slash command along with some example usage.
 
 ![Adding to autocomplete](field-autocomplete.png)
 
@@ -354,24 +358,23 @@ Save it! Now your slash command is available to your team for use.
 
 In the next tutorial, we'll build on this one in two ways:
 
-* Handling more complex information returned from the third-party service 
-* Sending the reply to Slack through an incoming webhook, which gives you more options for formatting and allows you to send the reply to any channel for everyone on the team to see.
+*	We’ll work with more complex information returned from the third-party service.
+*	We’ll explore sending the response to Slack as a public slash command reply or through an incoming webhook, which gives you more options for formatting and allows you to send the reply to any channel for everyone on the team to see.
 
 ### Further reading
 
 This tutorial touched several topics, and there's a lot more to learn about all of them.
 
-* Message formatting on Slack: https://api.slack.com/docs/formatting
-* cURL Basics: http://httpkit.com/resources/HTTP-from-the-Command-Line/
-* PHP Arrays: http://www.w3schools.com/php/php_arrays.asp
-* Using JSON: http://www.copterlabs.com/blog/json-what-it-is-how-it-works-how-to-use-it/
-
+*	Message formatting on Slack: https://api.slack.com/docs/formatting
+*	cURL Basics: http://httpkit.com/resources/HTTP-from-the-Command-Line/
+*	PHP Arrays: http://www.w3schools.com/php/php_arrays.asp
+*	Using JSON: http://www.copterlabs.com/blog/json-what-it-is-how-it-works-how-to-use-it/
 
 ## Download This Project
 
 If you haven't downloaded the completed script yet, you can get it here: https://github.com/mccreath/isitup-for-slack/
 
-
+If PHP is not your thing, and you’d like to see this in Python, my colleague Jake has you covered: https://github.com/jake-swanson/isituppy
 
 
 
