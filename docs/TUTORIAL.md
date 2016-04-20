@@ -52,8 +52,6 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 
 * 	cURL (http://curl.haxxe.se)
 
-	If you're familiar with cURL, feel free to jump over this section.
-
 	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes slash commands (and webhooks, as we'll see later) work. One of the great things about cURL is that you can use it from the command line (which makes it easy to use for testing things), or you can interact with it from most modern scripting languages, including PHP. We're going to take advantage of that and use it in our script to receive data from Slack and then send it back in. We'll be using a few very basic commands that are common for this type of task. All of the cURL that we use in this script will be transferrable to any other webhook script that you want to write. 
 
 ## Set up your slash command
