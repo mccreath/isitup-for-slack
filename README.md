@@ -11,7 +11,7 @@ Custom slash command to use isitup.org to check if a site is up from within Slac
 ## USAGE
 
 * Place the `isitup.php` script on a server running PHP5 with cURL and a valid SSL certificate.
-* Set up a new custom slash command on your Slack team: http://my.slack.com/services/new/slash-commands
+* Set up a new custom slash command on your Slack team: https://slack.com/apps/A0F82E8CA-slash-commands
 * Under "Choose a command", enter whatever you want for the command. /isitup is easy to remember.
 * Under "URL", enter the URL for the script on your server.
 * Leave "Method" set to "Post".
