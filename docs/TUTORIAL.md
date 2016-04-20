@@ -67,7 +67,7 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 
 Go to [https://slack.com/apps/A0F82E8CA-slash-commands](https://slack.com/apps/A0F82E8CA-slash-commands) to add a new slash command (you’ll need to be signed in). Click the “Add Configuration” button to start the process.
 
-![Add a slash command integration](add-slash-command.png)
+![Add a new configuration](add-configuration.png)
 
 Next, choose the text command itself. This is the text that the user will type after the slash. In this case, `isitup` is clear and short, so let's stick with that. But you can use whatever makes the most sense for your command and your users.
 
