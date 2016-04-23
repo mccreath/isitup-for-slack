@@ -57,7 +57,7 @@ Don't worry too much if you've never used one or more of these. Our use of them 
 
 	JSON is a simple way to represent and exchange data. It's an open standard format that uses human-readable text to transmit data objects consisting of key-value pairs.
 
-* 	cURL (http://curl.haxxe.se)
+* 	cURL (http://curl.haxx.se)
 
 	cURL (http://curl.haxx.se) is an open source tool that lets you transfer data with URL syntax, which is what web browsers use, and as a result, much of the web uses. Being able to transfer data with URL syntax is what makes slash commands (and webhooks, as we'll see later) work. 
 
