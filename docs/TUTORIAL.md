@@ -10,12 +10,12 @@ A slash command performs a very simple task: it takes whatever text you enter af
 
 **What makes slash commands so useful and powerful is what you do with that text at the URL.**
 
-For example, you have a script that translates English to French, so you create a slash command called `/translate`, and expect that the user will enter an English word that they'd like translated into French. When the user types `/translate dog` into the Slack message field, Slack bundles up the text string `dog` with those other server variables and sends the whole thing to your script, which performs its task of finding the correct French word, `chien`, and sends it back to Slack along with whatever message you added with your script has, and Slack posts it back to the user as `The French word for "dog" is "chien"`. No one else on the team will see message, since it's from Slackbot to the user.
+For example, you have a script that translates English to French, so you create a slash command called `/translate`, and expect that the user will enter an English word that they'd like translated into French. When the user types `/translate dog` into the Slack message field:
 
-1.	Slack bundles up the text string dog with those other server variables and sends the whole thing to your script on your server.
-2.	The script performs its task of finding the correct French word, chien
-3.	The script sends it back to Slack along with whatever additional information or message you added with your script
-4.	Slack posts it back to the user as The French word for “dog” is “chien”. By default, no one else on the team will see message.
+1. Slack bundles up the text string dog with those other server variables and sends the whole thing to your script on your server.
+2. The script performs its task of finding the correct French word, chien
+3. The script sends it back to Slack along with whatever additional information or message you added with your script
+4. Slack posts it back to the user as The French word for “dog” is “chien”. By default, no one else on the team will see message.
 
 This very simple demo will take you through the process of setting up a custom slash command (https://api.slack.com/slash-commands) using a third-party service. It's also the first part of a larger tutorial that will show you how to use a slash command to query a remote service and post the results to a channel, group, or DM.
 
