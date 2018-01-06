@@ -376,7 +376,7 @@ If you haven't downloaded the completed script yet, you can get it here: https:/
 
 If PHP is not your thing, and you’d like to see this in Python, my colleague Jake has you covered: https://github.com/jake-swanson/isituppy
 
-
+Could be it's time to retire this tutorial.
 
 
 
