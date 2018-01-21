@@ -23,7 +23,7 @@ If you're familiar with PHP, JSON, and cURL, you can probably find all the info 
 
 ## What we're going to do
 
-For this tutorial, we'll be using the web service [itisiup.org](http://isitup.org) to check whether a website is running. It's a good one to start with because the [API is super simple](https://isitup.org/api/api.html), and because you don't need an API key to use the service. All you need to do is identify your script to their servers.
+For this tutorial, we'll be using the web service [isitup.org](http://isitup.org) to check whether a website is running. It's a good one to start with because the [API is super simple](https://isitup.org/api/api.html), and because you don't need an API key to use the service. All you need to do is identify your script to their servers.
 
 The way isitup.org works is that you call a URL that specifies the domain you want to check and the format that you want to receive the data in. You can get JSON, JSONP, or comma-separate text. JSON stands for JavaScript Object Notation, and it's a common format for exchanging data between web services. It also happens that PHP has some nice built-in tools for working with it, so we're going to use the JSON option.
 
