@@ -6,7 +6,7 @@ You can download the completed script here: https://github.com/mccreath/isitup-f
 
 ## How Slack's Slash Commands Work
 
-A slash command performs a very simple task: it takes whatever text you enter after the command itself and sends it to a URL. Then it receives whatever that URL returns and posts it as a message in Slack. By default this message visible only to the person who issued the command, and that’s what this tutorial will do. We’ll get into posting the message for everyone in a channel to see in the next tutorial.
+A slash command performs a very simple task: it takes whatever text you enter after the command itself and sends it to a URL. Then it receives whatever that URL returns and posts it as a message in Slack. By default this message is visible only to the person who issued the command, and that’s what this tutorial will do. We’ll get into posting the message for everyone in a channel to see in the next tutorial.
 
 **What makes slash commands so useful and powerful is what you do with that text at the URL.**
 
